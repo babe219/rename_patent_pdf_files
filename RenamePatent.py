@@ -1,14 +1,21 @@
 #!/usr/bin/env python
 #-*-coding:utf-8 -*-
-"""this script can rename patents downloading from 
+"""
+this script can rename(example:P+publicdate+patentname) patents downloading from 
 <http://publicquery.sipo.gov.cn/index.jsp?language=zh_CN>.
-pdfminer's tool: pdf2txt.py is the main methods
+pdfminer's tool: pdf2txt.py is the main methods.this run successfully in windows7 .
 
-(1)for windows 7 and code is cp936.
+Requirement；
+(1)python 2
+(2)pdf2txt.py of pdfminer
 
+version 0.2 : impored feature
+(1)add progress bar and complete percentage.
+(2)add function to reduce wrongfiles.
+(3)add comments about this script.
 
 """
-__version__ = "0.1"
+__version__ = "0.2"
 
 
 import sys
@@ -17,6 +24,11 @@ import os.path
 import re
 
 
+output = sys.stdout
+errinfo = []
+print "*"*30+'starting'+"*"*30
+
+#deal with argument 
 def usage():
 	print 'usage:%s pathway' % sys.argv[0]
 
@@ -26,6 +38,9 @@ if len(sys.argv) != 2:
 elif os.path.exists(sys.argv[1]):
 	os.chdir(sys.argv[1])
 	filelist =  os.listdir(str(sys.argv[1]))
+	fileno = len(filelist)
+	print "get pathway successful"
+	print "get %d files from this pathway" %fileno
 else:
 	print "there is no this pathway ,plase input a new one!"
 	sys.exit(1)
@@ -42,13 +57,26 @@ def getpdfnameandno(fn):
 	return pdfdate, pdfname
 
 def main():  
+	
 	for i in filelist:
-		print i
-		date, name =getpdfnameandno(i)
-		newname = 'P%s_%s.pdf' %(date, name.decode('utf-8').encode('cp936'))
-		print newname
-		os.rename(i,newname)
-
+		#setup percent 
+		rate_num = 100*filelist.index(i)/int(fileno)
+		output.write('\rcomplete percent %d %s\r'%(rate_num, '%') )
+		output.flush()
+		pattdownfile = "\d+[a-zA-Z]?.pdf"
+		#deal wrong file
+		if  not re.search(pattdownfile, i): 
+			errinfo.append('%s : not patents or have renamed!' %i)
+			pass
+		else:
+			date, name =getpdfnameandno(i)
+			newname = 'P%s_%s.pdf' %(date, name.decode('utf-8').encode('cp936'))
+			#print newname
+			os.rename(i,newname)
+	print "complete percent 100%"
+	print "*"*20 + "rename all patents successful!!!" + "*"*20
+	for i in errinfo:
+		print '<'+ str(errinfo.index(i))+'>' + " "+ i
 if __name__ == '__main__':
 	main()
 

@@ -1,12 +1,12 @@
-rename_patent_pdf_files
-=======================
+this script can rename(example:P+publicdate+patentname) patents downloading from 
+<http://publicquery.sipo.gov.cn/index.jsp?language=zh_CN>.
+pdfminer's tool: pdf2txt.py is the main methods.this run successfully in windows7 .
 
-this script can rename patents downloading from &lt;http://publicquery.sipo.gov.cn/index.jsp?language=zh_CN>.
+Requirement；
+(1)python 2
+(2)pdf2txt.py of pdfminer
 
-pdfminer's tool: pdf2txt.py is the main methods
-
-(1)for windows 7 and code is cp936.
-
-
-"""
-__version__ = "0.1"
+version 0.2 : impored feature
+(1)add progress bar and complete percentage.
+(2)add function to reduce wrongfiles.
+(3)add comments about this script.

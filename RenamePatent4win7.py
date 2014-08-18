@@ -30,7 +30,7 @@ print "*"*30+'starting'+"*"*30
 
 #deal with argument 
 def usage():
-	print 'usage:%s pathway' % sys.argv[0]
+	print 'usage:python %s pathway' % sys.argv[0]
 
 if len(sys.argv) != 2:
 	print usage()
@@ -51,7 +51,7 @@ def getpdfnameandno(fn):
 	patterns1 = '申请公布日 (\d\d\d\d.\d\d.\d\d)CN'
 	patterns2 = '发明名称(.*)\(\d\d\)摘要'
 	
-	pdfstr = os.popen("python pdf2txt.py -p 1 "+fn).read()
+	pdfstr = os.popen("python C:\Python27\Scripts\pdf2txt.py -p 1 "+fn).read()
 	pdfdate = re.search(patterns1, pdfstr).group(1).replace('.','_')
 	pdfname = re.search(patterns2, pdfstr).group(1)
 	return pdfdate, pdfname

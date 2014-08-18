@@ -30,7 +30,7 @@ print "*"*30+'starting'+"*"*30
 
 #deal with argument 
 def usage():
-	print 'usage:%s pathway' % sys.argv[0]
+	print 'python usage:%s pathway' % sys.argv[0]
 
 if len(sys.argv) != 2:
 	print usage()

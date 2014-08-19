@@ -30,7 +30,7 @@ print "*"*30+'starting'+"*"*30
 
 #deal with argument 
 def usage():
-	print 'python usage:%s pathway' % sys.argv[0]
+	print 'usage:%s pathway' % sys.argv[0]
 
 if len(sys.argv) != 2:
 	print usage()
@@ -50,11 +50,13 @@ def getpdfnameandno(fn):
 	#set re pattern
 	patterns1 = '申请公布日 (\d\d\d\d.\d\d.\d\d)CN'
 	patterns2 = '发明名称(.*)\(\d\d\)摘要'
-	
+	patterns3 = '申请人(.*)地址'
+
 	pdfstr = os.popen("python pdf2txt.py -p 1 "+fn).read()
 	pdfdate = re.search(patterns1, pdfstr).group(1).replace('.','_')
 	pdfname = re.search(patterns2, pdfstr).group(1)
-	return pdfdate, pdfname
+	pdfpep = re.search(patterns3, pdfstr).group(1)
+	return pdfdate, pdfname, pdfpep
 
 def main():  
 	
@@ -63,14 +65,15 @@ def main():
 		rate_num = 100*filelist.index(i)/int(fileno)
 		output.write('\rcomplete percent %d %s\r'%(rate_num, '%') )
 		output.flush()
-		pattdownfile = "\d+[a-zA-Z]?.pdf"
+		
 		#deal wrong file
+		pattdownfile = "\d+[a-zA-Z]?.pdf"
 		if  not re.search(pattdownfile, i): 
 			errinfo.append('%s : not patents or have renamed!' %i)
 			pass
 		else:
-			date, name =getpdfnameandno(i)
-			newname = 'P%s_%s.pdf' %(date, name)
+			date, name, pep =getpdfnameandno(i)
+			newname = 'P%s_%s_%s.pdf' %(date, name, pep)
 			#print newname
 			os.rename(i,newname)
 	print "complete percent 100%"

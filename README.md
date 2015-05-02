@@ -10,3 +10,6 @@ version 0.2 : impored feature
 (1)add progress bar and complete percentage.
 (2)add function to reduce wrongfiles.
 (3)add comments about this script.
+
+### Usage：
+（1）python RenamePatent4win7.py  pathway
